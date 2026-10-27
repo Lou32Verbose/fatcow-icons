@@ -2,7 +2,7 @@
 
 3,926 original icons in each of four variants: **16x16**, **16x16-grey**, **32x32** and **32x32-grey**. Use individual PNGs or CSS sprites with no runtime dependencies.
 
-[Browse the icons](https://github.com/Lou32Verbose/fatcow-icons/blob/main/dist/index.html) by opening the catalogue locally in a browser. Packaging follows the [aspneticons](https://github.com/lou32Verbose/aspneticons) format.
+[Browse the icons](https://github.com/Lou32Verbose/fatcow-icons/blob/main/dist/index.html) by opening the catalogue locally in a browser.
 
 ## Choose a variant
 
