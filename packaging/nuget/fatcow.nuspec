@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>fatcow</id>
+    <version>1.0.0</version>
+    <authors>FatCow Web Hosting</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.md</license>
+    <description>FatCow Farm-Fresh PNG icons and CSS sprites. Confirm standalone redistribution terms before publication.</description>
+    <contentFiles><files include="any/any/**/*" buildAction="Content" copyToOutput="true" flatten="false" /></contentFiles>
+    <tags>fatcow icons png sprite</tags>
+  </metadata>
+  <files>
+    <file src="..\..\dist\**\*" target="content\fatcow" />
+    <file src="..\..\dist\**\*" target="contentFiles\any\any\fatcow" />
+    <file src="..\..\LICENSE.md" target="" />
+    <file src="..\..\NOTICE.md" target="" />
+    <file src="..\..\README.md" target="" />
+    <file src="..\..\docs\**\*" target="docs" />
+  </files>
+</package>

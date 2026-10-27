@@ -1,0 +1,28 @@
+{
+  "name": "fatcow",
+  "version": "1.0.0",
+  "description": "FatCow Farm-Fresh PNG icons and CSS sprites in 16px, 32px, color and grey variants",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "style": "dist/16x16/sprite/fatcow.css",
+  "files": [
+    "dist/",
+    "docs/",
+    "LICENSE.md",
+    "NOTICE.md",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "fatcow",
+    "icons",
+    "png",
+    "spritesheet"
+  ],
+  "scripts": {
+    "build": "python scripts/build.py",
+    "test": "python scripts/verify.py",
+    "archive": "python scripts/build.py --archive",
+    "prepack": "python scripts/verify.py"
+  }
+}

@@ -1,0 +1,5 @@
+artifacts/
+*.tgz
+__pycache__/
+.icons-build-*/
+.venv/

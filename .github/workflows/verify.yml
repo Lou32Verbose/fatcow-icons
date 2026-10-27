@@ -1,0 +1,50 @@
+name: Verify icon pack
+on: [push, pull_request]
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements.txt
+      - run: python scripts/build.py --archive
+      - run: python scripts/verify.py
+      - name: Check committed distribution
+        shell: python
+        run: |
+          import subprocess
+          result = subprocess.check_output(['git', 'status', '--porcelain', '--', 'dist'], text=True)
+          assert not result, 'Rebuild and commit dist/:\n' + result
+      - name: Check ZIP reproducibility
+        shell: python
+        run: |
+          import hashlib, pathlib, subprocess, sys
+          archive = pathlib.Path('artifacts/fatcow-1.0.0.zip')
+          before = hashlib.sha256(archive.read_bytes()).digest()
+          subprocess.run([sys.executable, 'scripts/build.py', '--archive'], check=True)
+          assert hashlib.sha256(archive.read_bytes()).digest() == before
+      - run: npm pack
+      - run: npm install --prefix artifacts/install-test --no-audit --no-fund ./fatcow-1.0.0.tgz
+      - name: Verify installed assets
+        shell: python
+        run: |
+          from pathlib import Path
+          root = Path('artifacts/install-test/node_modules/fatcow')
+          assert len(list((root / 'dist').glob('*/png/*.png'))) == 15704
+          assert (root / 'LICENSE.md').is_file()
+          assert (root / 'docs/upstream/readme-fatcow.txt').is_file()
+          assert (root / 'docs/contributing.md').is_file()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fatcow-${{ matrix.os }}
+          path: |
+            artifacts/*.zip
+            *.tgz
