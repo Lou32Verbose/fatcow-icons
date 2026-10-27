@@ -6,7 +6,10 @@
     <authors>FatCow Web Hosting</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="file">LICENSE.md</license>
-    <description>FatCow Farm-Fresh PNG icons and CSS sprites. Confirm standalone redistribution terms before publication.</description>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/Lou32Verbose/fatcow-icons</projectUrl>
+    <repository type="git" url="https://github.com/Lou32Verbose/fatcow-icons.git" commit="$RepositoryCommit$" />
+    <description>3,926 FatCow Farm-Fresh icons in four PNG variants (16px, 32px, color and grey), with CSS sprites and an offline catalogue. No runtime dependencies.</description>
     <contentFiles><files include="any/any/**/*" buildAction="Content" copyToOutput="true" flatten="false" /></contentFiles>
     <tags>fatcow icons png sprite</tags>
   </metadata>

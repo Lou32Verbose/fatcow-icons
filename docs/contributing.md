@@ -6,32 +6,32 @@ Run all commands from the repository root. Source artwork belongs in `src/`; gen
 
 ```text
 fatcow/
-├── README.md                  Installation, usage and attribution
-├── LICENSE.md
-├── NOTICE.md
-├── CHANGELOG.md
-├── package.json               npm package metadata and commands
-├── requirements.txt           Pinned build dependency
-├── src/                       Original PNGs, preserved byte-for-byte
-│   ├── 16x16/
-│   ├── 16x16-grey/
-│   ├── 32x32/
-│   └── 32x32-grey/
-├── dist/                      Generated, committed installation assets
-│   ├── <variant>/png/
-│   ├── <variant>/sprite/      fatcow.png, fatcow.css, fatcow.min.css
-│   ├── icons.json             Hashes, source paths, dimensions, positions
-│   └── index.html             Searchable offline catalogue
-├── docs/
-│   ├── contributing.md
-│   └── upstream/              Original release notes and filename list
-├── scripts/
-│   ├── build.py
-│   └── verify.py
-├── packaging/
-│   └── nuget/fatcow.nuspec
-├── .github/workflows/verify.yml
-└── artifacts/                 Ignored local packages and install tests
+â”œâ”€â”€ README.md                  Installation, usage and attribution
+â”œâ”€â”€ LICENSE.md
+â”œâ”€â”€ NOTICE.md
+â”œâ”€â”€ CHANGELOG.md
+â”œâ”€â”€ package.json               npm package metadata and commands
+â”œâ”€â”€ requirements.txt           Pinned build dependency
+â”œâ”€â”€ src/                       Original PNGs, preserved byte-for-byte
+â”‚   â”œâ”€â”€ 16x16/
+â”‚   â”œâ”€â”€ 16x16-grey/
+â”‚   â”œâ”€â”€ 32x32/
+â”‚   â””â”€â”€ 32x32-grey/
+â”œâ”€â”€ dist/                      Generated, committed installation assets
+â”‚   â”œâ”€â”€ <variant>/png/
+â”‚   â”œâ”€â”€ <variant>/sprite/      fatcow.png, fatcow.css, fatcow.min.css
+â”‚   â”œâ”€â”€ icons.json             Hashes, source paths, dimensions, positions
+â”‚   â””â”€â”€ index.html             Searchable offline catalogue
+â”œâ”€â”€ docs/
+â”‚   â”œâ”€â”€ contributing.md
+â”‚   â””â”€â”€ upstream/              Original release notes and filename list
+â”œâ”€â”€ scripts/
+â”‚   â”œâ”€â”€ build.py
+â”‚   â””â”€â”€ verify.py
+â”œâ”€â”€ packaging/
+â”‚   â””â”€â”€ nuget/fatcow.nuspec
+â”œâ”€â”€ .github/workflows/verify.yml
+â””â”€â”€ artifacts/                 Ignored local packages and install tests
 ```
 
 The old root-level source directories now live under `src/`. Source paths in `dist/icons.json` are repository-relative and include `src/`. Generated PNG paths, sprite URLs and CSS classes retain their existing names.
@@ -84,24 +84,28 @@ Equivalent maintainer commands are `npm run build`, `npm test` and `npm run arch
 
 ### NuGet
 
-Build and verify first, then use the NuGet CLI from the repository root:
+On Windows with Python dependencies and the .NET 10 SDK installed, run:
 
 ```sh
-nuget pack packaging/nuget/fatcow.nuspec -OutputDirectory artifacts
+python scripts/pack_nuget.py
 ```
 
-The template resolves its inputs relative to `packaging/nuget/`. It includes legacy `content/fatcow` and modern `contentFiles/any/any/fatcow` assets, plus documentation and attribution. NuGet packaging has no automatic build step. For ASP.NET applications, copy the selected files into `wwwroot`; output copying alone does not make them web-accessible.
+This verifies existing assets, downloads NuGet CLI 7.9.0 from dist.nuget.org into ignored `artifacts/tools/`, packs the template with the current Git commit, checks every packaged payload byte and metadata, and restores/builds an isolated .NET 10 consumer from a local feed with a fresh cache. Errors and warnings fail validation. A `.nupkg.sha256` file is written only after all checks pass. Rebuild first if source artwork changed.
+
+Outputs are `artifacts/fatcow.1.0.0.nupkg` and its SHA-256 file. The package contains legacy `content/fatcow` and modern `contentFiles/any/any/fatcow` assets, documentation and attribution. PackageReference builds copy assets to `fatcow/` under the build output. For ASP.NET applications, copy selected files into `wwwroot`; output copying alone does not make them web-accessible.
 
 ## Continuous integration
 
 CI builds and verifies on Windows and Linux, checks the committed distribution for drift, checks reproducible ZIP output, creates an npm tarball, and installs that tarball in an isolated directory. Packages are retained as workflow artifacts.
 
-## Release checklist
+## Manual NuGet.org release
 
-1. Confirm standalone redistribution rights against [the supplied license notices](../LICENSE.md). Preserve [upstream files](upstream/) and [attribution](../NOTICE.md).
-2. Update `package.json`, `packaging/nuget/fatcow.nuspec`, versioned package examples and the CI archive/install paths together. Record changes in `CHANGELOG.md`.
-3. Install the pinned dependency, rebuild and verify, and inspect the catalogue.
-4. Commit source, documentation and regenerated `dist/`. Require CI to pass and review package contents.
-5. For a public registry release, check package-name availability, set publisher/repository metadata, and remove `private: true` from `package.json` only after the redistribution terms are clarified.
+1. Preserve the CC BY 3.0 US license, FatCow attribution and original upstream notices. The licensing basis is recorded in LICENSE.md.
+2. Keep package.json, the NuGet template, versioned examples and CI paths in sync. Record changes in CHANGELOG.md. npm remains private; a NuGet release does not require changing it.
+3. Rebuild, verify and inspect the catalogue. Commit all release changes and require the Windows and Linux CI jobs to pass. The packed repository commit must match that release commit; packages made from a dirty checkout are for local review only.
+4. Download the `.nupkg` and `.nupkg.sha256` from the passing Windows CI artifact. Check the package with `Get-FileHash artifacts/fatcow.1.0.0.nupkg -Algorithm SHA256` and compare against the supplied checksum. Inspect archive contents and the repository commit before uploading. A checksum checks artifact integrity, not publisher identity.
+5. Sign in to the intended NuGet.org publisher account. Check the `fatcow` ID and `1.0.0` version in the gallery and upload flow, including ownership or reserved-prefix restrictions. An absent search result does not guarantee availability. If the ID/version conflicts, stop and explicitly decide the new ID/version; do not overwrite or silently rename.
+6. Open https://www.nuget.org/packages/manage/upload and select the validated `.nupkg`. Review ID, version, license, README, repository links, ownership and all validation messages in the preview, then submit manually. No credentials belong in this repository or CI.
+7. After indexing, inspect https://www.nuget.org/packages/fatcow/1.0.0 and test installation from NuGet.org in a fresh application. If a defect is discovered, unlist the affected release if appropriate and prepare a new version; published versions cannot be replaced.
 
-The repository remains configured for local packages rather than automatic publication.
+CI never publishes packages. The Windows job also packs and validates NuGet, restores/builds the isolated consumer and retains the package plus checksum alongside the existing ZIP/npm artifacts.

@@ -42,9 +42,18 @@ jobs:
           assert (root / 'LICENSE.md').is_file()
           assert (root / 'docs/upstream/readme-fatcow.txt').is_file()
           assert (root / 'docs/contributing.md').is_file()
+      - uses: actions/setup-dotnet@v4
+        if: runner.os == 'Windows'
+        with:
+          dotnet-version: '10.0.x'
+      - name: Pack and validate NuGet release
+        if: runner.os == 'Windows'
+        run: python scripts/pack_nuget.py
       - uses: actions/upload-artifact@v4
         with:
           name: fatcow-${{ matrix.os }}
           path: |
             artifacts/*.zip
+            artifacts/*.nupkg
+            artifacts/*.nupkg.sha256
             *.tgz

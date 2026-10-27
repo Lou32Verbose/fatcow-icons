@@ -2,7 +2,7 @@
 
 3,926 original icons in each of four variants: **16x16**, **16x16-grey**, **32x32** and **32x32-grey**. Use individual PNGs or CSS sprites with no runtime dependencies.
 
-[Browse the icons](dist/index.html) by opening the catalogue locally in a browser. Packaging follows the [aspneticons](https://github.com/lou32Verbose/aspneticons) format.
+[Browse the icons](https://github.com/Lou32Verbose/fatcow-icons/blob/main/dist/index.html) by opening the catalogue locally in a browser. Packaging follows the [aspneticons](https://github.com/lou32Verbose/aspneticons) format.
 
 ## Choose a variant
 
@@ -25,9 +25,9 @@ Upstream exception: `file_extension_png.png` is 32x32 in both 16px variants. Its
 npm install /path/to/fatcow-1.0.0.tgz
 ```
 
-Assets are under `node_modules/fatcow/dist/`. Configure your bundler or static asset copying to expose the selected files. To create the tarball or ZIP from a checkout, see [contributor instructions](docs/contributing.md#build-and-verify).
+Assets are under `node_modules/fatcow/dist/`. Configure your bundler or static asset copying to expose the selected files. To create the tarball or ZIP from a checkout, see [contributor instructions](https://github.com/Lou32Verbose/fatcow-icons/blob/main/docs/contributing.md#build-and-verify).
 
-**Use NuGet:** see [local NuGet packaging](docs/contributing.md#nuget). ASP.NET applications should copy the chosen assets into `wwwroot` to serve them.
+**Use NuGet:** install the published package with `dotnet add package fatcow --version 1.0.0`, or see [local NuGet packaging](https://github.com/Lou32Verbose/fatcow-icons/blob/main/docs/contributing.md#nuget) before publication. PackageReference builds copy assets into `fatcow/` under the build output; legacy packages.config projects receive `content/fatcow`. ASP.NET applications should copy the chosen assets into `wwwroot` to serve them.
 
 ## Display an individual icon
 
@@ -54,13 +54,14 @@ The first class selects the variant; the second is `fatcow-<filename without .pn
 Include this in your credits:
 
 ```html
-Icons by <a href="http://www.fatcow.com/free-icons">FatCow</a>
+Icons by <a href="http://www.fatcow.com/free-icons">FatCow</a>,
+licensed under <a href="https://creativecommons.org/licenses/by/3.0/us/">CC BY 3.0 US</a>
 ```
 
-See [LICENSE.md](LICENSE.md), [NOTICE.md](NOTICE.md) and the [original release notes](docs/upstream/readme-fatcow.txt). Registry publishing remains disabled pending clarification of the supplied redistribution notices.
+See [LICENSE.md](https://github.com/Lou32Verbose/fatcow-icons/blob/main/LICENSE.md), [NOTICE.md](https://github.com/Lou32Verbose/fatcow-icons/blob/main/NOTICE.md) and the [original release notes](https://github.com/Lou32Verbose/fatcow-icons/blob/main/docs/upstream/readme-fatcow.txt). The icons use Creative Commons Attribution 3.0 United States. Preserve attribution and license links; identify adaptations where required.
 
 ## For contributors
 
 Original artwork lives in `src/`; ready-to-use assets live in `dist/`. Build scripts are in `scripts/`, package templates in `packaging/`, and original reference files in `docs/upstream/`. Local packages are written to the ignored `artifacts/` directory.
 
-See [contributor instructions](docs/contributing.md) for the full layout, build, verification and release workflow. [CHANGELOG.md](CHANGELOG.md) records changes.
+See [contributor instructions](https://github.com/Lou32Verbose/fatcow-icons/blob/main/docs/contributing.md) for the full layout, build, verification and release workflow. [CHANGELOG.md](https://github.com/Lou32Verbose/fatcow-icons/blob/main/CHANGELOG.md) records changes.
